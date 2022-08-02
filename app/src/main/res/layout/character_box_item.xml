@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="7dp"
+    android:layout_marginTop="7dp">
+
+    <TextView
+        android:id="@+id/characterTV"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:cursorVisible="false"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="textVisiblePassword"
+        android:maxLength="1"
+        android:textSize="38sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/edit_text_background"
+        tools:text="A"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        android:imeOptions="actionNext"
+        android:singleLine="true"/>
+
+</androidx.cardview.widget.CardView>
