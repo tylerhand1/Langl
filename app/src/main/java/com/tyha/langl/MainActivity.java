@@ -18,9 +18,11 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView characterBoxesRecView;
     private CharacterBoxesRecViewAdapter adapter;
-    private Button btnQ, btnW, btnE, btnR, btnT, btnY, btnU, btnI, btnO, btnP, btnA, btnS, btnD,
-            btnF, btnG, btnH, btnJ, btnK, btnL, btnZ, btnX, btnC, btnV, btnB, btnN, btnM, btnEnter,
-            btnBack;
+    private Button btnEnter, btnBack;
+
+    private String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+            "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+            "U", "V", "W", "X", "Y", "Z"};
 
     private ArrayList<CharacterBox> boxes;
     private int currentLevel, currentPosition, currentBox;
@@ -34,176 +36,25 @@ public class MainActivity extends AppCompatActivity {
         currentLevel = 0;
         currentPosition = 0;
         currentBox = 0;
+
         generateBoxes();
         generateKeyboardBtns();
         setLetterKeyBoardOnClickListeners();
     }
 
     private void setLetterKeyBoardOnClickListeners() {
-        // First row
+        for (int i = 0; i < letters.length; i++) {
+            int btnId = getResources().getIdentifier("btn" + letters[i], "id", getPackageName());
+            Button btn = findViewById(btnId);
 
-        // Q
-        btnQ.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("Q");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // W
-        btnW.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("W");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // E
-        btnE.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("E");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // R
-        btnR.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("R");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // T
-        btnT.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("T");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // Y
-        btnY.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("Y");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // U
-        btnU.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("U");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // I
-        btnI.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("I");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // O
-        btnO.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("O");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // P
-        btnP.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("P");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
+            int finalI = i;
+            btn.setOnClickListener((View v) -> {
+                boxes.get(currentBox).setLetter(letters[finalI]);
+                adapter.notifyItemChanged(currentBox);
+                incrementPosition();
+            });
+        }
 
-        // Second row
-
-        // A
-        btnA.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("A");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // S
-        btnS.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("S");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // F
-        btnF.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("F");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // D
-        btnD.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("D");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // G
-        btnG.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("G");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // H
-        btnH.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("H");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // J
-        btnJ.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("J");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // K
-        btnK.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("K");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // L
-        btnL.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("L");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-
-        // Third row
-
-        // Z
-        btnZ.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("Z");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // X
-        btnX.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("X");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // C
-        btnC.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("C");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // V
-        btnV.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("V");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // B
-        btnB.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("B");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // N
-        btnN.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("N");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
-        // M
-        btnM.setOnClickListener((View v) -> {
-            boxes.get(currentBox).setLetter("M");
-            adapter.notifyItemChanged(currentBox);
-            incrementPosition();
-        });
         // Back
         btnBack.setOnClickListener((View v) -> {
             if (boxes.get(currentBox).getLetter().isEmpty()) {
@@ -237,32 +88,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void generateKeyboardBtns() {
-        btnQ = findViewById(R.id.btnQ);
-        btnW = findViewById(R.id.btnW);
-        btnE = findViewById(R.id.btnE);
-        btnR = findViewById(R.id.btnR);
-        btnT = findViewById(R.id.btnT);
-        btnY = findViewById(R.id.btnY);
-        btnU = findViewById(R.id.btnU);
-        btnI = findViewById(R.id.btnI);
-        btnO = findViewById(R.id.btnO);
-        btnP = findViewById(R.id.btnP);
-        btnA = findViewById(R.id.btnA);
-        btnS = findViewById(R.id.btnS);
-        btnD = findViewById(R.id.btnD);
-        btnF = findViewById(R.id.btnF);
-        btnG = findViewById(R.id.btnG);
-        btnH = findViewById(R.id.btnH);
-        btnJ = findViewById(R.id.btnJ);
-        btnK = findViewById(R.id.btnK);
-        btnL = findViewById(R.id.btnL);
-        btnZ = findViewById(R.id.btnZ);
-        btnX = findViewById(R.id.btnX);
-        btnC = findViewById(R.id.btnC);
-        btnV = findViewById(R.id.btnV);
-        btnB = findViewById(R.id.btnB);
-        btnN = findViewById(R.id.btnN);
-        btnM = findViewById(R.id.btnM);
         btnEnter = findViewById(R.id.btnEnter);
         btnBack = findViewById(R.id.btnBack);
     }
@@ -333,16 +158,22 @@ public class MainActivity extends AppCompatActivity {
         // Check guess word with current word of the game
 
         String correctWord = test[6];
-        // repeats will be used to determine the repetition count for each letter
 
         if (validWord) {
             if (guess.equals(correctWord)) {
                 // Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < 5; i++) {
+                    // Change the color of the boxes
                     boxes.get(i + start).setBackgroundColor(2);
                     boxes.get(i + start).setTextColor(1);
                     boxes.get(i + start).setCorrect(true);
                     adapter.notifyItemChanged(i + start);
+
+                    // Change the color of the buttons
+                    int btnId = getResources().getIdentifier("btn" + boxes.get(i + start).getLetter(), "id", getPackageName());
+                    Button btn = findViewById(btnId);
+                    btn.setBackgroundColor(boxes.get(i + start).getBackgroundColor());
+                    btn.setTextColor(Color.parseColor("#ffffff"));
                 }
                 disableKeyboardOnClickListeners();
             } else {
@@ -381,23 +212,13 @@ public class MainActivity extends AppCompatActivity {
                     } else if (correctWord.indexOf(guess.charAt(i)) > 0) {
                         // The letter is in the word, but not in the correct position
                         // Toast.makeText(this, "Char " + Character.toString(guess.charAt(i)) + " found elsewhere", Toast.LENGTH_SHORT).show();
-                        // Check for repeats
-                        int repeatCount = 0;
-                        for (int j = 0; j < 5; j++) {
-                            if (boxes.get(j + start).getBackgroundColor() == Color.parseColor("#f1c40f")) {
-                                repeatCount++;
-                            }
-                        }
-                        int repeatLetterCount = 0;
-                        for (int j = 0; j < 5; j++) {
-                            if (guess.charAt(i) == correctWord.charAt(j)) {
-                                repeatCount++;
-                            }
-                        }
+                        // Set box to yellow
+
                         boxes.get(i + start).setBackgroundColor(1);
                         boxes.get(i + start).setTextColor(1);
                         adapter.notifyItemChanged(i + start);
 
+                        // Check if another box with the same letter is marked as correct
                         int count = 0;
                         for (int j = 0; j < 5; j++) {
                             if (guess.charAt(j) == correctWord.charAt(j)) {
@@ -406,14 +227,8 @@ public class MainActivity extends AppCompatActivity {
                             count++;
                         }
 
-                        // Check if the letter is repeat and already in correct slot
-                        // If it is in correct slot previously, keep button green
-                        // Else, change button to yellow
-                        if (!boxes.get(count + start).isCorrect()) {
-                            // Change background color of the button to yellow
-                            btn.setBackgroundColor(boxes.get(i + start).getBackgroundColor());
-                        }
-
+                        // Change the background color of the button to the background color of its corresponding box
+                        btn.setBackgroundColor(boxes.get(i + start).getBackgroundColor());
 
                     } else {
                         // The letter is not in the correct word
@@ -431,24 +246,18 @@ public class MainActivity extends AppCompatActivity {
             // Word is not found in database
             Toast.makeText(this, "Word not found", Toast.LENGTH_SHORT).show();
         }
-        // Count frequencies of yellow boxes
+        // Count frequencies of yellow boxes, green boxes, and correct letters
         ArrayList<CharacterBox> boxesYellow = new ArrayList<>();
+        ArrayList<CharacterBox> boxesGreen = new ArrayList<>();
+        ArrayList<String> correctWordLetters = new ArrayList<>();
         for (int i = start; i < start + 5; i++) {
             if (boxes.get(i).getBackgroundColor() == Color.parseColor("#f1c40f")) {
                 boxesYellow.add(boxes.get(i));
             }
-        }
-        // Count frequencies of green boxes
-        ArrayList<CharacterBox> boxesGreen = new ArrayList<>();
-        for (int i = start; i < start + 5; i++) {
             if (boxes.get(i).getBackgroundColor() == Color.parseColor("#27ae60")) {
                 boxesGreen.add(boxes.get(i));
             }
-        }
-        // Count frequencies of letters in correct word
-        ArrayList<String> correctWordLetters = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            correctWordLetters.add(String.valueOf(correctWord.charAt(i)));
+            correctWordLetters.add(String.valueOf(correctWord.charAt(i - start)));
         }
 
         // Generate maps of their frequencies
@@ -467,19 +276,16 @@ public class MainActivity extends AppCompatActivity {
                 int sum = yellowCount + greenCount;
                 if (sum >= correctCount) {
                     // Sum is greater than or equal to frequency in correct word, need to change at least one yellow box to gray
+                    int btnId = getResources().getIdentifier("btn" + boxes.get(i).getLetter(), "id", getPackageName());
+                    Button btn = findViewById(btnId);
                     if (greenCount == correctCount) {
                         // Turn all yellow boxes gray
                         if (boxes.get(i).getBackgroundColor() != Color.parseColor("#27ae60")) {
                             boxes.get(i).setBackgroundColor(-1);
                             adapter.notifyItemChanged(i + start);
                         }
-                    } else {
-                        System.out.println(greenCount + " " + correctCount);
-                        if (greenCount != 0) {
-                            // May need to keep some yellow boxes yellow
-
-                        }
                     }
+                    btn.setBackgroundColor(Color.parseColor("#27ae60"));
                 }
             }
         }
@@ -511,32 +317,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void disableKeyboardOnClickListeners() {
-        btnQ.setOnClickListener(null);
-        btnW.setOnClickListener(null);
-        btnE.setOnClickListener(null);
-        btnR.setOnClickListener(null);
-        btnT.setOnClickListener(null);
-        btnY.setOnClickListener(null);
-        btnU.setOnClickListener(null);
-        btnI.setOnClickListener(null);
-        btnO.setOnClickListener(null);
-        btnP.setOnClickListener(null);
-        btnA.setOnClickListener(null);
-        btnS.setOnClickListener(null);
-        btnD.setOnClickListener(null);
-        btnF.setOnClickListener(null);
-        btnG.setOnClickListener(null);
-        btnH.setOnClickListener(null);
-        btnJ.setOnClickListener(null);
-        btnK.setOnClickListener(null);
-        btnL.setOnClickListener(null);
-        btnZ.setOnClickListener(null);
-        btnX.setOnClickListener(null);
-        btnC.setOnClickListener(null);
-        btnV.setOnClickListener(null);
-        btnB.setOnClickListener(null);
-        btnN.setOnClickListener(null);
-        btnM.setOnClickListener(null);
+        for (int i = 0; i < letters.length; i++) {
+            int btnId = getResources().getIdentifier("btn" + letters[i], "id", getPackageName());
+            Button btn = findViewById(btnId);
+
+            int finalI = i;
+            btn.setOnClickListener(null);
+        }
         btnBack.setOnClickListener(null);
         btnEnter.setOnClickListener(null);
     }
