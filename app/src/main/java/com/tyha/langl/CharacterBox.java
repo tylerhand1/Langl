@@ -9,6 +9,15 @@ public class CharacterBox {
     private int backgroundColor, textColor;
     private boolean correct;
 
+    public CharacterBox(String letter, int position, int level, int backgroundColor, int textColor, boolean correct) {
+        this.letter = letter;
+        this.position = position;
+        this.level = level;
+        this.backgroundColor = backgroundColor;
+        this.textColor = textColor;
+        this.correct = correct;
+    }
+
     public boolean isCorrect() {
         return correct;
     }
@@ -53,15 +62,6 @@ public class CharacterBox {
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
-    }
-
-    public CharacterBox(String letter, int position, int level, int backgroundColor, int textColor, boolean correct) {
-        this.letter = letter;
-        this.position = position;
-        this.level = level;
-        this.backgroundColor = backgroundColor;
-        this.textColor = textColor;
-        this.correct = correct;
     }
 
     public String getLetter() {

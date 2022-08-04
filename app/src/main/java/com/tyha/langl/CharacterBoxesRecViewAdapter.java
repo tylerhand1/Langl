@@ -2,29 +2,17 @@ package com.tyha.langl;
 
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
-import java.util.Locale;
 
 public class CharacterBoxesRecViewAdapter extends RecyclerView.Adapter<CharacterBoxesRecViewAdapter.ViewHolder> {
 

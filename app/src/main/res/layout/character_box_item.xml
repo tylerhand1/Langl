@@ -12,22 +12,21 @@
         android:id="@+id/characterTV"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:background="@drawable/edit_text_background"
         android:cursorVisible="false"
         android:ems="10"
         android:gravity="center"
+        android:imeOptions="actionNext"
         android:inputType="textVisiblePassword"
         android:maxLength="1"
+        android:singleLine="true"
+        android:textColor="@color/black"
         android:textSize="38sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/edit_text_background"
-        tools:text="A"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        android:imeOptions="actionNext"
-        android:singleLine="true"/>
+        tools:text="A"/>
 
 </androidx.cardview.widget.CardView>

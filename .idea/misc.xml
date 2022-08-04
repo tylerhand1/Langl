@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/tyler/AndroidStudioProjects/Langl/app/src/main/res/drawable/edit_text_background.xml" value="0.221" />
+        <entry key="..\:/Users/tyler/AndroidStudioProjects/Langl/app/src/main/res/layout/activity_game.xml" value="0.2546875" />
+        <entry key="..\:/Users/tyler/AndroidStudioProjects/Langl/app/src/main/res/layout/activity_game2.xml" value="0.2546875" />
         <entry key="..\:/Users/tyler/AndroidStudioProjects/Langl/app/src/main/res/layout/activity_main.xml" value="0.268" />
         <entry key="..\:/Users/tyler/AndroidStudioProjects/Langl/app/src/main/res/layout/character_box_item.xml" value="0.1" />
       </map>
