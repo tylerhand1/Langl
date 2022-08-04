@@ -28,6 +28,10 @@ public class GameActivity extends AppCompatActivity {
     private ArrayList<CharacterBox> boxes;
     private int currentLevel, currentPosition, currentBox;
 
+    private DataBaseHelper dataBaseHelper;
+
+    private String correctWord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,10 @@ public class GameActivity extends AppCompatActivity {
 
         // Disable auto screen orientation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+
+        dataBaseHelper = new DataBaseHelper(this);
+
+        correctWord = dataBaseHelper.getCorrectWord();
 
         currentLevel = 0;
         currentPosition = 0;
@@ -171,18 +179,16 @@ public class GameActivity extends AppCompatActivity {
 
         // Check guess word against others in database to filter nonsense
 
-        String[] test = {"CHANT", "PLANT", "GRANT", "ROOMY", "CRUMB", "CALLS", "COLOR", "OOOOO", "OORRR"};
+        ArrayList<String> words = dataBaseHelper.getWords();
         boolean validWord = false;
 
-        for (int i = 0; i < test.length; i++) {
-            if (guess.equals(test[i])) {
+        for (int i = 0; i < words.size(); i++) {
+            if (guess.equals(words.get(i))) {
                 validWord = true;
             }
         }
 
         // Check guess word with current word of the game
-
-        String correctWord = test[6];
 
         if (validWord) {
             if (guess.equals(correctWord)) {
