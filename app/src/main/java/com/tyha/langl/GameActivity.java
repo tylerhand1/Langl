@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +28,23 @@ public class GameActivity extends AppCompatActivity {
     private ArrayList<CharacterBox> boxes;
     private int currentLevel, currentPosition, currentBox;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game);
+
+        // Disable auto screen orientation
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+
+        currentLevel = 0;
+        currentPosition = 0;
+        currentBox = 0;
+
+        generateBoxes();
+        generateKeyboardBtns();
+        setLetterKeyBoardOnClickListeners();
+    }
+
     private static Map countFrequencies(ArrayList<CharacterBox> boxes) {
         Map<String, Integer> map = new HashMap<>();
 
@@ -47,20 +65,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
         return map;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
-
-        currentLevel = 0;
-        currentPosition = 0;
-        currentBox = 0;
-
-        generateBoxes();
-        generateKeyboardBtns();
-        setLetterKeyBoardOnClickListeners();
     }
 
     private void setLetterKeyBoardOnClickListeners() {
