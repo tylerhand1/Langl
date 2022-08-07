@@ -216,7 +216,7 @@ public class GameActivity extends AppCompatActivity {
 
                 } else {
                     // Too many incorrect guesses
-                    Toast.makeText(this, "You lose", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "You lose. The word was " + correctWord, Toast.LENGTH_SHORT).show();
                     disableKeyboardOnClickListeners();
 
                 }
@@ -240,7 +240,7 @@ public class GameActivity extends AppCompatActivity {
                         // Set background color of button to green
                         btn.setBackgroundColor(boxes.get(i + start).getBackgroundColor());
 
-                    } else if (correctWord.indexOf(guess.charAt(i)) > 0) {
+                    } else if (correctWord.indexOf(guess.charAt(i)) >= 0) {
                         // The letter is in the word, but not in the correct position
                         // Toast.makeText(this, "Char " + Character.toString(guess.charAt(i)) + " found elsewhere", Toast.LENGTH_SHORT).show();
                         // Set box to yellow

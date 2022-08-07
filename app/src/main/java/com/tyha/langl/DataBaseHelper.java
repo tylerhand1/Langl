@@ -92,12 +92,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(createTableStmt);
 
-        try {
-            InputStream input = context.getAssets().open(DB_PATH +DB_NAME);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        db.close();
     }
 
     public String getCorrectWord() {
