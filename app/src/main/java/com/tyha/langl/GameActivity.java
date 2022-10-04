@@ -171,7 +171,7 @@ public class GameActivity extends AppCompatActivity {
         }
         for (int i = start; i < start + 5; i++) {
             if (boxes.get(i).getLetter().isEmpty()) {
-                Toast.makeText(this, "You need to five letters", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You need to have five letters", Toast.LENGTH_SHORT).show();
                 return false;
             }
             guess += boxes.get(i).getLetter();

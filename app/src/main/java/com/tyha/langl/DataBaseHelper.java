@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -19,11 +20,13 @@ import java.util.Random;
 public class DataBaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase db;
     Context context;
-    private static String DB_PATH = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/";
-    private static String DB_NAME = "english_test.db";
+    private static final String DB_PATH = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/";
+    private static final String DB_NAME = "langl.db";
+    private static final String TAG = "DataBaseHelper";
+    private static final int version = 6;
 
     public DataBaseHelper(@Nullable Context context) {
-        super(context, "english_test.db", null, 1);
+        super(context, "langl.db", null, version);
         this.context = context;
 
         boolean dbExist = checkDatabase();
@@ -37,7 +40,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private void createDatabase() {
         boolean dbExist = checkDatabase();
         if (dbExist) {
-            System.out.println("DB exists");
+            Log.d(TAG, "DB exists");
         } else {
             this.getReadableDatabase();
             try {
@@ -49,15 +52,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     private void copyDatabase() throws IOException {
+        Log.d(TAG, "Copying db from assets to database folder");
         InputStream input = context.getAssets().open(DB_NAME);
-
         String outFileName = DB_PATH + DB_NAME;
-
         OutputStream output = new FileOutputStream(outFileName);
-
         byte[] buffer = new byte[1024];
         int length;
-
         while ((length = input.read(buffer)) > 0) {
             output.write(buffer, 0, length);
         }
@@ -79,40 +79,67 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             File dbFile = new File(path);
             dbExist = dbFile.exists();
         } catch (SQLException e) {
-            System.out.println("DB does not exist");
+            Log.e(TAG, "DB does not exist");
         }
-
         return dbExist;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStmt = "CREATE TABLE IF NOT EXISTS ENGLISH_TEST_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "ENGLISH_WORD TEXT);";
+        String createTableStmt = "CREATE TABLE IF NOT EXISTS DE_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "DE_WORD TEXT);";
 
         db.execSQL(createTableStmt);
 
-        db.close();
+        createTableStmt = "CREATE TABLE IF NOT EXISTS FR_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "FR_WORD TEXT);";
+
+        db.execSQL(createTableStmt);
+
+        createTableStmt = "CREATE TABLE IF NOT EXISTS RU_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "RU_WORD TEXT);";
+
+        db.execSQL(createTableStmt);
+
+        try {
+            copyDatabase();
+        } catch (IOException e) {
+            throw new Error("Error copying database");
+        }
     }
 
     public String getCorrectWord() {
         Random rand = new Random();
 
-        int randNum = rand.nextInt(12975);
-
-        String query = "SELECT ENGLISH_WORD FROM ENGLISH_TEST_TABLE WHERE ID = " + randNum + ";";
+        int bound;
 
         db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery(query, null, null);
+        String length_query = "SELECT COUNT(*) FROM FR_WORD_TABLE;";
+
+        Cursor cursor = db.rawQuery(length_query, null, null);
+        if(cursor.moveToFirst()) {
+            bound = cursor.getInt(0);
+            cursor.close();
+            Log.d(TAG, "Length: " + bound);
+        } else {
+            bound = 0;
+        }
+
+        int randNum = rand.nextInt(bound);
+
+        String query = "SELECT FR_WORD FROM FR_WORD_TABLE WHERE ID = " + randNum + ";";
+
+        cursor = db.rawQuery(query, null, null);
         String word;
         if(cursor.moveToFirst()) {
             word = cursor.getString(0);
             cursor.close();
             db.close();
-
+            Log.d(TAG, "Word: " + word);
             return word;
         } else {
+            Log.d(TAG, "Word: None");
             cursor.close();
             db.close();
 
@@ -123,7 +150,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public ArrayList<String> getWords() {
         ArrayList<String> words = new ArrayList<>();
 
-        String query = "SELECT * FROM ENGLISH_TEST_TABLE";
+        String query = "SELECT * FROM FR_WORD_TABLE";
         db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(query, null, null);
@@ -143,6 +170,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS DE_WORD_TABLE");
+        db.execSQL("DROP TABLE IF EXISTS FR_WORD_TABLE");
+        db.execSQL("DROP TABLE IF EXISTS RU_WORD_TABLE");
+        onCreate(db);
     }
 }
