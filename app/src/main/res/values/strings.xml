@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Langl</string>
+    <string name="welcome_msg">Welcome to Langl</string>
+    <string name="lang_choice_de">German</string>
+    <string name="lang_choice_fr">French</string>
+    <string name="lang_choice_ru">Russian</string>
+    <string name="start_game_button">Launch Game</string>
 </resources>

@@ -4,23 +4,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:gravity="center"
     tools:context=".MainActivity">
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textWelcome"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:id="@+id/rgLang">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbDE"
+            android:text="@string/lang_choice_de"
+            android:checked="true"
+            tools:text="German"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbFR"
+            android:text="@string/lang_choice_fr"
+            tools:text="French"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbRU"
+            android:text="@string/lang_choice_ru"
+            tools:text="Russian"/>
+    </RadioGroup>
 
     <Button
         android:id="@+id/btnLaunchGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textWelcome"
+        android:layout_below="@id/rgLang"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="Launch game" />
+        android:text="@string/start_game_button" />
 
     <TextView
         android:id="@+id/textWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Welcome to Langl"
+        android:layout_centerHorizontal="true"
+        android:text="@string/welcome_msg"
         android:textSize="24sp"/>
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -21,12 +22,14 @@ public class GameActivity extends AppCompatActivity {
     private CharacterBoxesRecViewAdapter adapter;
     private Button btnEnter, btnBack;
 
-    private String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+    private final String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
             "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
             "U", "V", "W", "X", "Y", "Z"};
 
     private ArrayList<CharacterBox> boxes;
     private int currentLevel, currentPosition, currentBox;
+    private int lang;
+    private static final String TAG = "GameActivity";
 
     private DataBaseHelper dataBaseHelper;
 
@@ -37,10 +40,18 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        // https://stackoverflow.com/questions/2091465/how-do-i-pass-data-between-activities-in-android-application
+        // To grab the chosen language
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            lang = extras.getInt("lang");
+            Log.d(TAG, "Lang num chosen: " + lang);
+        }
+
         // Disable auto screen orientation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
-        dataBaseHelper = new DataBaseHelper(this);
+        dataBaseHelper = new DataBaseHelper(this, lang);
 
         correctWord = dataBaseHelper.getCorrectWord();
 
@@ -145,7 +156,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public boolean makeGuess() {
-        String guess = "";
+        StringBuilder guess = new StringBuilder();
 
         // Check if each box is filled in the current level
         int start;
@@ -174,7 +185,7 @@ public class GameActivity extends AppCompatActivity {
                 Toast.makeText(this, "You need to have five letters", Toast.LENGTH_SHORT).show();
                 return false;
             }
-            guess += boxes.get(i).getLetter();
+            guess.append(boxes.get(i).getLetter());
         }
 
         // Check guess word against others in database to filter nonsense
@@ -183,7 +194,7 @@ public class GameActivity extends AppCompatActivity {
         boolean validWord = false;
 
         for (int i = 0; i < words.size(); i++) {
-            if (guess.equals(words.get(i))) {
+            if (guess.toString().equals(words.get(i))) {
                 validWord = true;
             }
         }
@@ -191,7 +202,7 @@ public class GameActivity extends AppCompatActivity {
         // Check guess word with current word of the game
 
         if (validWord) {
-            if (guess.equals(correctWord)) {
+            if (guess.toString().equals(correctWord)) {
                 // Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < 5; i++) {
                     // Change the color of the boxes
@@ -329,8 +340,6 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < letters.length; i++) {
             int btnId = getResources().getIdentifier("btn" + letters[i], "id", getPackageName());
             Button btn = findViewById(btnId);
-
-            int finalI = i;
             btn.setOnClickListener(null);
         }
         btnBack.setOnClickListener(null);
