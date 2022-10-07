@@ -31,9 +31,6 @@ public class CharacterBox {
             case -1:
                 // Incorrect
                 return Color.parseColor("#7f8c8d");
-            case 0:
-                // Default
-                return Color.parseColor("#ffffff");
             case 1:
                 // Correct, but wrong position
                 return Color.parseColor("#f1c40f");

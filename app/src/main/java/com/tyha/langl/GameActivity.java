@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class GameActivity extends AppCompatActivity {
@@ -53,7 +54,8 @@ public class GameActivity extends AppCompatActivity {
 
         dataBaseHelper = new DataBaseHelper(this, lang);
 
-        correctWord = dataBaseHelper.getCorrectWord();
+//        correctWord = dataBaseHelper.getCorrectWord();
+        correctWord = "WERDE";
 
         currentLevel = 0;
         currentPosition = 0;
@@ -61,26 +63,25 @@ public class GameActivity extends AppCompatActivity {
 
         generateBoxes();
         generateKeyboardBtns();
+
         setLetterKeyBoardOnClickListeners();
     }
 
-    private static Map countFrequencies(ArrayList<CharacterBox> boxes) {
-        Map<String, Integer> map = new HashMap<>();
+    private static LinkedHashMap<String, Integer> countFrequencies(char[] word) {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
 
-        for (CharacterBox i : boxes) {
-            Integer j = map.get(i.getLetter());
-            map.put(i.getLetter(), (j == null) ? 1 : j + 1);
+        for (char i : word) {
+            map.put(String.valueOf(i), map.containsKey(String.valueOf(i)) ? map.get(String.valueOf(i)) + 1 : 1);
         }
 
         return map;
     }
 
-    private static Map countCorrectFrequencies(ArrayList<String> letter) {
-        Map<String, Integer> map = new HashMap<>();
+    private static LinkedHashMap<Integer, String> getPositions(char[] word) {
+        LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
 
-        for (String i : letter) {
-            Integer j = map.get(i);
-            map.put(i, (j == null) ? 1 : j + 1);
+        for (int i = 0; i < word.length; i++) {
+            map.put(new Integer(i), String.valueOf(word[i]));
         }
 
         return map;
@@ -159,27 +160,8 @@ public class GameActivity extends AppCompatActivity {
         StringBuilder guess = new StringBuilder();
 
         // Check if each box is filled in the current level
-        int start;
-        switch (currentLevel) {
-            case 1:
-                start = 5;
-                break;
-            case 2:
-                start = 10;
-                break;
-            case 3:
-                start = 15;
-                break;
-            case 4:
-                start = 20;
-                break;
-            case 5:
-                start = 25;
-                break;
-            default:
-                start = 0;
-                break;
-        }
+        int start = currentLevel * 5;
+
         for (int i = start; i < start + 5; i++) {
             if (boxes.get(i).getLetter().isEmpty()) {
                 Toast.makeText(this, "You need to have five letters", Toast.LENGTH_SHORT).show();
@@ -189,7 +171,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
         // Check guess word against others in database to filter nonsense
-
         ArrayList<String> words = dataBaseHelper.getWords();
         boolean validWord = false;
 
@@ -200,23 +181,93 @@ public class GameActivity extends AppCompatActivity {
         }
 
         // Check guess word with current word of the game
-
         if (validWord) {
-            if (guess.toString().equals(correctWord)) {
-                // Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
-                for (int i = 0; i < 5; i++) {
-                    // Change the color of the boxes
-                    boxes.get(i + start).setBackgroundColor(2);
-                    boxes.get(i + start).setTextColor(1);
-                    boxes.get(i + start).setCorrect(true);
-                    adapter.notifyItemChanged(i + start);
+            // Generate hashmaps for the letter counts and positions for the guess and correct word
+            LinkedHashMap<String, Integer> guessLetterFrequencies = countFrequencies(guess.toString().toCharArray());
+            LinkedHashMap<Integer, String> guessLetterPositions = getPositions(guess.toString().toCharArray());
 
-                    // Change the color of the buttons
-                    int btnId = getResources().getIdentifier("btn" + boxes.get(i + start).getLetter(), "id", getPackageName());
-                    Button btn = findViewById(btnId);
-                    btn.setBackgroundColor(boxes.get(i + start).getBackgroundColor());
-                    btn.setTextColor(Color.parseColor("#ffffff"));
+            LinkedHashMap<String, Integer> correctLetterFrequencies = countFrequencies(correctWord.toCharArray());
+            LinkedHashMap<Integer, String> correctLetterPositions = getPositions(correctWord.toCharArray());
+
+            Log.d(TAG, guessLetterFrequencies.toString());
+            Log.d(TAG, guessLetterPositions.toString());
+            Log.d(TAG, guess.toString());
+
+            Log.d(TAG, correctLetterFrequencies.toString());
+            Log.d(TAG, correctLetterPositions.toString());
+            Log.d(TAG, correctWord);
+
+            /*
+                Iterate over positions hashmaps
+                If letter same for both, set corresponding box to green and decrement corresponding frequencies
+                Else do nothing
+            */
+            int iter = start;
+            for (Map.Entry<Integer, String> pos : guessLetterPositions.entrySet()) {
+                int btnId = getResources().getIdentifier("btn" + boxes.get(iter).getLetter(), "id", getPackageName());
+                Button btn = findViewById(btnId);
+                if (correctLetterPositions.containsKey(pos.getKey()) && pos.getValue().equals(correctLetterPositions.get(pos.getKey())) && correctLetterFrequencies.get(pos.getValue()) > 0) {
+                    // Letter is in correct position
+                    // Decrement frequency
+                    Integer frequency = correctLetterFrequencies.get(pos.getValue());
+                    correctLetterFrequencies.put(pos.getValue(), frequency - 1);
+                    frequency = guessLetterFrequencies.get(pos.getValue());
+                    guessLetterFrequencies.put(pos.getValue(), frequency - 1);
+
+                    // Set color of keyboard button and box
+                    // Change the color of the boxes
+                    boxes.get(iter).setBackgroundColor(2);
+                    boxes.get(iter).setTextColor(1);
+                    boxes.get(iter).setCorrect(true);
+                    adapter.notifyItemChanged(iter);
+                } else if (!correctLetterPositions.containsValue(pos.getValue())) {
+                    // Letter not in correct word
+                    boxes.get(iter).setBackgroundColor(-1);
+                    boxes.get(iter).setTextColor(1);
+                    boxes.get(iter).setCorrect(true);
+                    adapter.notifyItemChanged(iter);
                 }
+                btn.setBackgroundColor(boxes.get(iter).getBackgroundColor());
+                btn.setTextColor(Color.parseColor("#ffffff"));
+                iter++;
+            }
+            /*
+                Iterate over frequency hashmaps
+                If not in correct position and count greater than 0, set to yellow
+                Else do nothing
+            */
+            iter = start;
+            for (Map.Entry<Integer, String> pos : guessLetterPositions.entrySet()) {
+                int btnId = getResources().getIdentifier("btn" + boxes.get(iter).getLetter(), "id", getPackageName());
+                Button btn = findViewById(btnId);
+                if (correctLetterPositions.containsValue(pos.getValue())) {
+                    System.out.println(pos.getValue() + " " + boxes.get(iter).getBackgroundColor());
+                    if (boxes.get(iter).getBackgroundColor() == -1) {
+                        if (correctLetterFrequencies.get(pos.getValue()) > 0) {
+                            // Letter exists and is in incorrect position
+                            // Set color of keyboard button and box
+                            // Change the color of the boxes
+                            boxes.get(iter).setBackgroundColor(1);
+                            boxes.get(iter).setTextColor(1);
+                            boxes.get(iter).setCorrect(true);
+                            adapter.notifyItemChanged(iter);
+
+                            btn.setBackgroundColor(boxes.get(iter).getBackgroundColor());
+                        } else {
+                            System.out.println(correctLetterFrequencies.get(pos.getValue()));
+                            boxes.get(iter).setBackgroundColor(-1);
+                            boxes.get(iter).setTextColor(1);
+                            boxes.get(iter).setCorrect(true);
+                            adapter.notifyItemChanged(iter);
+                        }
+                    }
+                }
+                btn.setBackgroundColor(boxes.get(iter).getBackgroundColor());
+                btn.setTextColor(Color.parseColor("#ffffff"));
+                iter++;
+            }
+            if (guess.toString().equals(correctWord)) {
+                Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
                 disableKeyboardOnClickListeners();
             } else {
                 if (currentLevel < 5) {
@@ -224,116 +275,14 @@ public class GameActivity extends AppCompatActivity {
                     currentLevel++;
                     currentBox++;
                     currentPosition = 0;
-
                 } else {
                     // Too many incorrect guesses
                     Toast.makeText(this, "You lose. The word was " + correctWord, Toast.LENGTH_SHORT).show();
                     disableKeyboardOnClickListeners();
-
-                }
-
-                // Update the color of the TextViews and Buttons
-                // Iterate over each character
-                for (int i = 0; i < 5; i++) {
-                    // Get the id for the button to change its color
-                    int btnId = getResources().getIdentifier("btn" + boxes.get(i + start).getLetter(), "id", getPackageName());
-                    Button btn = findViewById(btnId);
-                    btn.setTextColor(Color.parseColor("#ffffff"));
-
-                    if (guess.charAt(i) == correctWord.charAt(i)) {
-                        // The character in the box is correct, set the TextView and Button background to green
-                        // Toast.makeText(this, Character.toString(guess.charAt(i)), Toast.LENGTH_SHORT).show();
-                        boxes.get(i + start).setBackgroundColor(2);
-                        boxes.get(i + start).setTextColor(1);
-                        boxes.get(i + start).setCorrect(true);
-                        adapter.notifyItemChanged(i + start);
-
-                        // Set background color of button to green
-                        btn.setBackgroundColor(boxes.get(i + start).getBackgroundColor());
-
-                    } else if (correctWord.indexOf(guess.charAt(i)) >= 0) {
-                        // The letter is in the word, but not in the correct position
-                        // Toast.makeText(this, "Char " + Character.toString(guess.charAt(i)) + " found elsewhere", Toast.LENGTH_SHORT).show();
-                        // Set box to yellow
-
-                        boxes.get(i + start).setBackgroundColor(1);
-                        boxes.get(i + start).setTextColor(1);
-                        adapter.notifyItemChanged(i + start);
-
-                        // Check if another box with the same letter is marked as correct
-                        int count = 0;
-                        for (int j = 0; j < 5; j++) {
-                            if (guess.charAt(j) == correctWord.charAt(j)) {
-                                break;
-                            }
-                            count++;
-                        }
-
-                        // Change the background color of the button to the background color of its corresponding box
-                        btn.setBackgroundColor(boxes.get(i + start).getBackgroundColor());
-
-                    } else {
-                        // The letter is not in the correct word
-                        // Toast.makeText(this, "Char not found at all", Toast.LENGTH_SHORT).show();
-                        boxes.get(i + start).setBackgroundColor(-1);
-                        boxes.get(i + start).setTextColor(1);
-                        adapter.notifyItemChanged(i + start);
-
-                        // Set background color of button to dark gray
-                        btn.setBackgroundColor(boxes.get(i + start).getBackgroundColor());
-                    }
-                }
-            }
-        } else {
-            // Word is not found in database
-            Toast.makeText(this, "Word not found", Toast.LENGTH_SHORT).show();
-        }
-        // Count frequencies of yellow boxes, green boxes, and correct letters
-        ArrayList<CharacterBox> boxesYellow = new ArrayList<>();
-        ArrayList<CharacterBox> boxesGreen = new ArrayList<>();
-        ArrayList<String> correctWordLetters = new ArrayList<>();
-        for (int i = start; i < start + 5; i++) {
-            if (boxes.get(i).getBackgroundColor() == Color.parseColor("#f1c40f")) {
-                boxesYellow.add(boxes.get(i));
-            }
-            if (boxes.get(i).getBackgroundColor() == Color.parseColor("#27ae60")) {
-                boxesGreen.add(boxes.get(i));
-            }
-            correctWordLetters.add(String.valueOf(correctWord.charAt(i - start)));
-        }
-
-        // Generate maps of their frequencies
-        Map yellowLetterFrequencies = countFrequencies(boxesYellow);
-        Map greenLetterFrequencies = countFrequencies(boxesGreen);
-        Map correctWordLetterFrequencies = countCorrectFrequencies(correctWordLetters);
-
-        // Compare the two maps
-        for (int i = start; i < start + 5; i++) {
-            // First check if letter is in both maps
-            if (yellowLetterFrequencies.containsKey(boxes.get(i).getLetter()) && greenLetterFrequencies.containsKey(boxes.get(i).getLetter())) {
-                // Compare the letter
-                int yellowCount = (int) yellowLetterFrequencies.get(boxes.get(i).getLetter());
-                int greenCount = (int) greenLetterFrequencies.get(boxes.get(i).getLetter());
-                int correctCount = (int) correctWordLetterFrequencies.get(boxes.get(i).getLetter());
-                int sum = yellowCount + greenCount;
-                if (sum >= correctCount) {
-                    // Sum is greater than or equal to frequency in correct word, need to change at least one yellow box to gray
-                    int btnId = getResources().getIdentifier("btn" + boxes.get(i).getLetter(), "id", getPackageName());
-                    Button btn = findViewById(btnId);
-                    if (greenCount == correctCount) {
-                        // Turn all yellow boxes gray
-                        if (boxes.get(i).getBackgroundColor() != Color.parseColor("#27ae60")) {
-                            boxes.get(i).setBackgroundColor(-1);
-                            adapter.notifyItemChanged(i + start);
-                        }
-                    }
-                    btn.setBackgroundColor(Color.parseColor("#27ae60"));
                 }
             }
         }
-
-
-        return true;
+        return false;
     }
 
     private void disableKeyboardOnClickListeners() {

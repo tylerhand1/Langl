@@ -25,6 +25,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DataBaseHelper";
     private static final int version = 6;
     private String TABLE, WORD;
+    private int tableBound;
 
     public DataBaseHelper(@Nullable Context context, int lang) {
         super(context, "langl.db", null, version);
@@ -34,14 +35,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             case 0:
                 TABLE = "DE_WORD_TABLE";
                 WORD = "DE_WORD";
+                tableBound = 40147;
                 break;
             case 1:
                 TABLE = "FR_WORD_TABLE";
                 WORD = "FR_WORD";
+                tableBound = 56837;
                 break;
             case 2:
                 TABLE = "RU_WORD_TABLE";
                 WORD = "RU_WORD";
+                tableBound = 77215;
                 break;
         }
 
@@ -133,24 +137,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         db = this.getReadableDatabase();
 
-        String length_query = "SELECT COUNT(*) FROM " + TABLE + ";";
-
-        Cursor cursor = db.rawQuery(length_query, null, null);
-        if(cursor.moveToFirst()) {
-            bound = cursor.getInt(0);
-            cursor.close();
-            Log.d(TAG, "Length: " + bound);
-        } else {
-            db.close();
-            cursor.close();
-            return "";
-        }
-
-        int randNum = rand.nextInt(bound);
+        int randNum = rand.nextInt(tableBound);
 
         String query = "SELECT " + WORD + " FROM " + TABLE + " WHERE ID = " + randNum + ";";
 
-        cursor = db.rawQuery(query, null, null);
+        Cursor cursor = db.rawQuery(query, null, null);
         String word;
         if(cursor.moveToFirst()) {
             word = cursor.getString(0);
