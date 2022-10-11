@@ -34,6 +34,18 @@
             android:id="@+id/rbRU"
             android:text="@string/lang_choice_ru"
             tools:text="Russian"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbCS"
+            android:text="@string/lang_choice_cs"
+            tools:text="Czech"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbIT"
+            android:text="@string/lang_choice_it"
+            tools:text="Italian"/>
     </RadioGroup>
 
     <Button

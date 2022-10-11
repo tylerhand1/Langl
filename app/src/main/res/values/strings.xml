@@ -4,5 +4,7 @@
     <string name="lang_choice_de">German</string>
     <string name="lang_choice_fr">French</string>
     <string name="lang_choice_ru">Russian</string>
+    <string name="lang_choice_cs">Czech</string>
+    <string name="lang_choice_it">Italian</string>
     <string name="start_game_button">Launch Game</string>
 </resources>

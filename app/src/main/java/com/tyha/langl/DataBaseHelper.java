@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase db;
@@ -23,29 +22,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DB_PATH = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/";
     private static final String DB_NAME = "langl.db";
     private static final String TAG = "DataBaseHelper";
-    private static final int version = 6;
-    private String TABLE, WORD;
-    private int tableBound;
+    private static final int version = 12;
+    private String TABLE;
+    private final int LENGTH;
 
-    public DataBaseHelper(@Nullable Context context, int lang) {
+    public DataBaseHelper(@Nullable Context context, int lang, int length) {
         super(context, "langl.db", null, version);
         this.context = context;
+        this.LENGTH = length;
 
         switch(lang) {
             case 0:
                 TABLE = "DE_WORD_TABLE";
-                WORD = "DE_WORD";
-                tableBound = 40147;
                 break;
             case 1:
                 TABLE = "FR_WORD_TABLE";
-                WORD = "FR_WORD";
-                tableBound = 56837;
                 break;
             case 2:
                 TABLE = "RU_WORD_TABLE";
-                WORD = "RU_WORD";
-                tableBound = 77215;
+                break;
+            case 3:
+                TABLE = "CS_WORD_TABLE";
+                break;
+            case 4:
+                TABLE = "IT_WORD_TABLE";
                 break;
         }
 
@@ -66,7 +66,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             try {
                 copyDatabase();
             } catch (IOException e) {
-                throw new Error("Error copying database");
+                Log.e(TAG, e.toString());
             }
         }
     }
@@ -107,39 +107,41 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableStmt = "CREATE TABLE IF NOT EXISTS DE_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "DE_WORD TEXT);";
+                "WORD TEXT);";
 
         db.execSQL(createTableStmt);
 
         createTableStmt = "CREATE TABLE IF NOT EXISTS FR_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "FR_WORD TEXT);";
+                "WORD TEXT);";
 
         db.execSQL(createTableStmt);
 
         createTableStmt = "CREATE TABLE IF NOT EXISTS RU_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "RU_WORD TEXT);";
+                "WORD TEXT);";
+
+        db.execSQL(createTableStmt);
+
+        createTableStmt = "CREATE TABLE IF NOT EXISTS CS_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "WORD TEXT);";
+
+        db.execSQL(createTableStmt);
+
+        createTableStmt = "CREATE TABLE IF NOT EXISTS IT_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "WORD TEXT);";
 
         db.execSQL(createTableStmt);
 
         try {
             copyDatabase();
         } catch (IOException e) {
-            throw new Error("Error copying database");
+            Log.e(TAG, e.toString());
         }
-
-        db.close();
     }
 
     public String getCorrectWord() {
-        Random rand = new Random();
-
-        int bound;
-
         db = this.getReadableDatabase();
-
-        int randNum = rand.nextInt(tableBound);
-
-        String query = "SELECT " + WORD + " FROM " + TABLE + " WHERE ID = " + randNum + ";";
+        // https://stackoverflow.com/questions/2279706/select-random-row-from-a-sqlite-table
+        String query = "SELECT WORD FROM " + TABLE + " WHERE LENGTH(WORD) = " + LENGTH + " ORDER BY RANDOM() LIMIT 1;";
 
         Cursor cursor = db.rawQuery(query, null, null);
         String word;
@@ -161,7 +163,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public ArrayList<String> getWords() {
         ArrayList<String> words = new ArrayList<>();
 
-        String query = "SELECT * FROM " + TABLE + ";";
+        String query = "SELECT * FROM " + TABLE + " WHERE LENGTH(WORD) = " + LENGTH + ";";
         db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(query, null, null);
@@ -184,6 +186,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS DE_WORD_TABLE");
         db.execSQL("DROP TABLE IF EXISTS FR_WORD_TABLE");
         db.execSQL("DROP TABLE IF EXISTS RU_WORD_TABLE");
+        db.execSQL("DROP TABLE IF EXISTS IT_WORD_TABLE");
+        db.execSQL("DROP TABLE IF EXISTS CS_WORD_TABLE");
         onCreate(db);
     }
 }

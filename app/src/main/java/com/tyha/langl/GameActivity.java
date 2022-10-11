@@ -29,7 +29,7 @@ public class GameActivity extends AppCompatActivity {
 
     private ArrayList<CharacterBox> boxes;
     private int currentLevel, currentPosition, currentBox;
-    private int lang;
+    private int lang, length;
     private static final String TAG = "GameActivity";
 
     private DataBaseHelper dataBaseHelper;
@@ -46,16 +46,17 @@ public class GameActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             lang = extras.getInt("lang");
+            length = extras.getInt("length");
             Log.d(TAG, "Lang num chosen: " + lang);
+            Log.d(TAG, "Length: " + length);
         }
 
         // Disable auto screen orientation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
-        dataBaseHelper = new DataBaseHelper(this, lang);
+        dataBaseHelper = new DataBaseHelper(this, lang, 5);
 
-//        correctWord = dataBaseHelper.getCorrectWord();
-        correctWord = "WERDE";
+        correctWord = dataBaseHelper.getCorrectWord();
 
         currentLevel = 0;
         currentPosition = 0;
@@ -241,7 +242,6 @@ public class GameActivity extends AppCompatActivity {
                 int btnId = getResources().getIdentifier("btn" + boxes.get(iter).getLetter(), "id", getPackageName());
                 Button btn = findViewById(btnId);
                 if (correctLetterPositions.containsValue(pos.getValue())) {
-                    System.out.println(pos.getValue() + " " + boxes.get(iter).getBackgroundColor());
                     if (boxes.get(iter).getBackgroundColor() == -1) {
                         if (correctLetterFrequencies.get(pos.getValue()) > 0) {
                             // Letter exists and is in incorrect position
@@ -269,6 +269,7 @@ public class GameActivity extends AppCompatActivity {
             if (guess.toString().equals(correctWord)) {
                 Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
                 disableKeyboardOnClickListeners();
+                return true;
             } else {
                 if (currentLevel < 5) {
                     // Incorrect guess made, go to next row
@@ -280,6 +281,22 @@ public class GameActivity extends AppCompatActivity {
                     Toast.makeText(this, "You lose. The word was " + correctWord, Toast.LENGTH_SHORT).show();
                     disableKeyboardOnClickListeners();
                 }
+            }
+        } else {
+            if (currentLevel < 5) {
+                // Incorrect guess made, go to next row
+                currentLevel++;
+                currentBox++;
+                currentPosition = 0;
+            } else {
+                // Too many incorrect guesses
+                Toast.makeText(this, "You lose. The word was " + correctWord, Toast.LENGTH_SHORT).show();
+                disableKeyboardOnClickListeners();
+            }
+            for (int i = start; i < start + 5; i++) {
+                boxes.get(i).setBackgroundColor(-1);
+                boxes.get(i).setTextColor(1);
+                adapter.notifyItemChanged(i);
             }
         }
         return false;

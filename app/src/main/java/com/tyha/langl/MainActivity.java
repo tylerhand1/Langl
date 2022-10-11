@@ -34,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.rbRU:
                     lang = 2;
                     break;
+                case R.id.rbCS:
+                    lang = 3;
+                    break;
+                case R.id.rbIT:
+                    lang = 4;
+                    break;
                 default:
                     // Default and German will have same value for now
                     lang = 0;
@@ -43,13 +49,14 @@ public class MainActivity extends AppCompatActivity {
         btnLaunchGame = findViewById(R.id.btnLaunchGame);
 
         btnLaunchGame.setOnClickListener((View v) -> {
-            changeActivity(lang);
+            changeActivity(lang, 5);
         });
     }
 
-    private void changeActivity(int lang) {
+    private void changeActivity(int lang, int length) {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("lang", lang);
+        intent.putExtra("length", length);
         startActivity(intent);
     }
 
