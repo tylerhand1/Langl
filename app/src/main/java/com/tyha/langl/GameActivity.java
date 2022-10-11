@@ -283,21 +283,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         } else {
-            if (currentLevel < 5) {
-                // Incorrect guess made, go to next row
-                currentLevel++;
-                currentBox++;
-                currentPosition = 0;
-            } else {
-                // Too many incorrect guesses
-                Toast.makeText(this, "You lose. The word was " + correctWord, Toast.LENGTH_SHORT).show();
-                disableKeyboardOnClickListeners();
-            }
-            for (int i = start; i < start + 5; i++) {
-                boxes.get(i).setBackgroundColor(-1);
-                boxes.get(i).setTextColor(1);
-                adapter.notifyItemChanged(i);
-            }
+            Toast.makeText(this, "Word not found.", Toast.LENGTH_SHORT).show();
         }
         return false;
     }

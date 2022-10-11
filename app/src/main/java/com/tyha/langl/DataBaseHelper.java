@@ -22,7 +22,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DB_PATH = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/";
     private static final String DB_NAME = "langl.db";
     private static final String TAG = "DataBaseHelper";
-    private static final int version = 12;
+    private static final int version = 13;
     private String TABLE;
     private final int LENGTH;
 
