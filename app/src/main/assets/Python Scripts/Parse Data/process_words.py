@@ -8,6 +8,7 @@
 
 import sys
 import pandas as pd
+import unicodedata as ud
 
 def parse_file(filename):
     lang_set = set()
@@ -27,17 +28,36 @@ def parse_file(filename):
     if filename in langs:
         with open('Words/{}_30K.txt'.format(filename), 'r') as f:
             lines = f.readlines()
-            for line in lines:
-                line = line.split()[1]
-                has_number = any(i.isdigit() for i in line)
-                if not has_number and line.isalpha():
-                    if len(line) > 1:
+            if filename == 'de':
+                for line in lines:
+                    line = line.split()[1].lower()
+                    if not any(char not in valid_letters and char not in valid_letters_de for char in line):
                         line = line.upper()
                         lang_set.add(line)
-                    else:
-                        if line in valid_words:
-                            line = line.upper()
-                            lang_set.add(line)
+            if filename == 'fr':
+                for line in lines:
+                    line = line.split()[1].lower()
+                    if not any(char not in valid_letters and char not in valid_letters_fr for char in line):
+                        line = line.upper()
+                        lang_set.add(line)
+            if filename == 'it':
+                for line in lines:
+                    line = line.split()[1].lower()
+                    if not any(char not in valid_letters and char not in valid_letters_it for char in line):
+                        line = line.upper()
+                        lang_set.add(line)
+            if filename == 'cs':
+                for line in lines:
+                    line = line.split()[1].lower()
+                    if not any(char not in valid_letters and char not in valid_letters_cs for char in line):
+                        line = line.upper()
+                        lang_set.add(line)
+            if filename == 'ru':
+                for line in lines:
+                    line = line.split()[1].lower()
+                    if not any(char not in valid_letters_ru for char in line):
+                        line = line.upper()
+                        lang_set.add(line)
     if filename == 'de':
         with open('Extra Words/german.txt') as f:
             lines = f.readlines()
@@ -66,7 +86,7 @@ def parse_file(filename):
         if filename == 'cs':
             for line in lines:
                 line = line.split()[0].lower()
-                if not any(char not in valid_letters or char not in valid_letters_cs for char in line):
+                if not any(char not in valid_letters and char not in valid_letters_cs for char in line):
                     line = line.upper()
                     lang_set.add(line)
         if filename == 'ru':
@@ -77,10 +97,37 @@ def parse_file(filename):
                     lang_set.add(line)
 
     with open('Parsed_Words/{}_30K.txt'.format(filename), 'w') as f:
-        f.write('ID, WORD\n')
-        for line in lang_set:
-            f.write('{},{}\n'.format(str(counter), line))
-            counter += 1
+        if filename != 'ru':
+            f.write('ID, WORD, NORMALIZED_WORD\n')
+            for line in lang_set:
+                normalized_line = rmdiacritics(line)
+                f.write('{},{},{}\n'.format(str(counter), line.strip(), normalized_line.strip()))
+                counter += 1
+        else:
+            f.write('ID, WORD\n')
+            for line in lang_set:
+                f.write('{},{}\n'.format(str(counter), line))
+                counter += 1
+
+# https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-normalize-in-a-python-unicode-string
+def rmdiacritics(line):
+    '''
+    Return the base character of char, by "removing" any
+    diacritics like accents or curls and strokes and the like.
+    '''
+    return_line = ''
+    for char in line:
+        if ud.category(char) != 'Cc':
+            desc = ud.name(char)
+            cutoff = desc.find(' WITH ')
+            if cutoff != -1:
+                desc = desc[:cutoff]
+                try:
+                    char = ud.lookup(desc)
+                except KeyError:
+                    pass  # removing "WITH ..." produced an invalid name
+            return_line += char
+    return return_line
 
 
 if __name__ == '__main__':

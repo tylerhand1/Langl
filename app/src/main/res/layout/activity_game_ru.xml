@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        tools:context=".GameActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/keyboardRowOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/characterBoxesRecView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/btnЙ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Й"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toBottomOf="@+id/keyboardRowOne"
+                app:layout_constraintStart_toStartOf="@+id/keyboardRowOne"
+                app:layout_constraintTop_toTopOf="@+id/keyboardRowOne"/>
+
+            <Button
+                android:id="@+id/btnЦ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ц"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЙ"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnУ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="У"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЦ"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnК"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="К"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnУ"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnE"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="E"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnК"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnН"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Н"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnE"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnГ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Г"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnН"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnШ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ш"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnГ"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnЩ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Щ"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnШ"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnЗ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="З"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЩ"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnХ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Х"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЗ"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+            <Button
+                android:id="@+id/btnЪ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ъ"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnХ"
+                app:layout_constraintTop_toTopOf="@+id/btnЙ" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/keyboardRowTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/keyboardRowOne"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:id="@+id/btnФ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ф"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toBottomOf="@+id/keyboardRowTwo"
+                app:layout_constraintStart_toStartOf="@+id/keyboardRowTwo"
+                app:layout_constraintTop_toTopOf="@+id/keyboardRowTwo" />
+
+            <Button
+                android:id="@+id/btnЫ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ы"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnФ"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnВ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="В"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЫ"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnА"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="А"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnВ"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnП"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="П"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnА"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnР"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Р"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnП"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnО"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="О"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnР"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnЛ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Л"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnО"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnД"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Д"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЛ"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnЖ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ж"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnД"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnЭ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Э"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЖ"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+            <Button
+                android:id="@+id/btnЁ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ё"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЭ"
+                app:layout_constraintTop_toTopOf="@+id/btnФ" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/keyboardRowThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/keyboardRowTwo"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:id="@+id/btnEnter"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Enter"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/keyboardRowThree"
+                app:layout_constraintStart_toStartOf="@id/keyboardRowThree"
+                app:layout_constraintTop_toTopOf="@+id/keyboardRowThree" />
+
+            <Button
+                android:id="@+id/btnЯ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Я"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@+id/btnEnter"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+            <Button
+                android:id="@+id/btnЧ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ч"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЯ"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+            <Button
+                android:id="@+id/btnС"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="С"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЧ"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+            <Button
+                android:id="@+id/btnМ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="М"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnС"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+            <Button
+                android:id="@+id/btnИ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="И"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnМ"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+            <Button
+                android:id="@+id/btnТ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Т"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnИ"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+            <Button
+                android:id="@+id/btnЬ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ь"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnТ"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+            <Button
+                android:id="@+id/btnБ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Б"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnЬ"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+            <Button
+                android:id="@+id/btnЮ"
+                android:layout_width="24dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Ю"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/btnБ"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="50dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="@color/white"
+                android:padding="0dp"
+                android:text="Back"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/btnЮ"
+                app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/characterBoxesRecView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp" />
+    </RelativeLayout>
+</ScrollView>

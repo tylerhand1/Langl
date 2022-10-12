@@ -22,7 +22,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DB_PATH = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/";
     private static final String DB_NAME = "langl.db";
     private static final String TAG = "DataBaseHelper";
-    private static final int version = 13;
+    private static final int version = 19;
     private String TABLE;
     private final int LENGTH;
 
@@ -107,12 +107,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableStmt = "CREATE TABLE IF NOT EXISTS DE_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "WORD TEXT);";
+                "WORD TEXT, NORMALIZED_WORD TEXT);";
 
         db.execSQL(createTableStmt);
 
         createTableStmt = "CREATE TABLE IF NOT EXISTS FR_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "WORD TEXT);";
+                "WORD TEXT, NORMALIZED_WORD TEXT);";
 
         db.execSQL(createTableStmt);
 
@@ -122,12 +122,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTableStmt);
 
         createTableStmt = "CREATE TABLE IF NOT EXISTS CS_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "WORD TEXT);";
+                "WORD TEXT, NORMALIZED_WORD TEXT);";
 
         db.execSQL(createTableStmt);
 
         createTableStmt = "CREATE TABLE IF NOT EXISTS IT_WORD_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "WORD TEXT);";
+                "WORD TEXT, NORMALIZED_WORD TEXT);";
 
         db.execSQL(createTableStmt);
 
@@ -138,45 +138,69 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public String getCorrectWord() {
+    public ArrayList<String> getCorrectWord() {
+        ArrayList<String> word = new ArrayList<>();
         db = this.getReadableDatabase();
         // https://stackoverflow.com/questions/2279706/select-random-row-from-a-sqlite-table
-        String query = "SELECT WORD FROM " + TABLE + " WHERE LENGTH(WORD) = " + LENGTH + " ORDER BY RANDOM() LIMIT 1;";
+        String query;
+        if (TABLE == "RU_WORD_TABLE") {
+            query = "SELECT WORD FROM " + TABLE + " WHERE LENGTH(WORD) = " + LENGTH + " ORDER BY RANDOM() LIMIT 1;";
 
-        Cursor cursor = db.rawQuery(query, null, null);
-        String word;
-        if(cursor.moveToFirst()) {
-            word = cursor.getString(0);
-            cursor.close();
-            db.close();
-            Log.d(TAG, "Word: " + word);
-            return word;
-        } else {
-            Log.d(TAG, "Word: None");
-            cursor.close();
-            db.close();
+            Cursor cursor = db.rawQuery(query, null, null);
 
-            return "";
+            if(cursor.moveToFirst()) {
+                word.add(cursor.getString(0));
+                cursor.close();
+                db.close();
+                Log.d(TAG, "Word: " + word.get(0));
+            } else {
+                Log.d(TAG, "Word: None");
+                cursor.close();
+                db.close();
+            }
         }
+        else {
+            query = "SELECT WORD, NORMALIZED_WORD FROM " + TABLE + " WHERE LENGTH(WORD) = " + LENGTH + " ORDER BY RANDOM() LIMIT 1;";
+
+            Cursor cursor = db.rawQuery(query, null, null);
+
+            if(cursor.moveToFirst()) {
+                word.add(cursor.getString(0));
+                word.add(cursor.getString(1));
+                cursor.close();
+                db.close();
+                Log.d(TAG, "Word: " + word.get(0));
+            } else {
+                Log.d(TAG, "Word: None");
+                cursor.close();
+                db.close();
+            }
+        }
+        return word;
     }
 
     public ArrayList<String> getWords() {
         ArrayList<String> words = new ArrayList<>();
+        String query = "";
 
-        String query = "SELECT * FROM " + TABLE + " WHERE LENGTH(WORD) = " + LENGTH + ";";
+        if (TABLE == "RU_WORD_TABLE")
+            query = "SELECT WORD FROM " + TABLE + " WHERE LENGTH(WORD) = " + LENGTH + ";";
+        else
+            query = "SELECT NORMALIZED_WORD FROM " + TABLE + " WHERE LENGTH(NORMALIZED_WORD) = " + LENGTH + ";";
+
         db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(query, null, null);
         if(cursor.moveToFirst()) {
             do {
-                String word = cursor.getString(1);
+                String word = cursor.getString(0);
 
                 words.add(word);
             } while(cursor.moveToNext());
         }
 
         cursor.close();
-        db.close();
+//        db.close();
 
         return words;
     }

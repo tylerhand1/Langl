@@ -23,26 +23,22 @@ public class GameActivity extends AppCompatActivity {
     private CharacterBoxesRecViewAdapter adapter;
     private Button btnEnter, btnBack;
 
-    private final String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
-            "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-            "U", "V", "W", "X", "Y", "Z"};
+    private String[] letters;
 
     private ArrayList<CharacterBox> boxes;
+    private ArrayList<String> correctWord, words;
     private int currentLevel, currentPosition, currentBox;
     private int lang, length;
     private static final String TAG = "GameActivity";
 
     private DataBaseHelper dataBaseHelper;
 
-    private String correctWord;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
 
         // https://stackoverflow.com/questions/2091465/how-do-i-pass-data-between-activities-in-android-application
-        // To grab the chosen language
+        // To grab the chosen language and word length
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             lang = extras.getInt("lang");
@@ -51,12 +47,40 @@ public class GameActivity extends AppCompatActivity {
             Log.d(TAG, "Length: " + length);
         }
 
+        switch (lang) {
+            case 1:
+                // French
+                setContentView(R.layout.activity_game_fr);
+                break;
+            case 2:
+                // Russian
+                letters = new String[] {"Й", "Ц", "У", "К", "E", "Н", "Г", "Ш", "Щ", "З",
+                        "Х", "Ъ", "Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж", "Э",
+                        "Ё", "Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю"};
+                setContentView(R.layout.activity_game_ru);
+                break;
+            case 4:
+                // Italian
+                setContentView(R.layout.activity_game_it);
+                break;
+            default:
+                // German and Czech
+                setContentView(R.layout.activity_game_de_cs);
+                break;
+        }
+
+        if (lang != 2) {
+            letters = new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+                    "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
+                    "X", "Y", "Z"};
+        }
+
         // Disable auto screen orientation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
-        dataBaseHelper = new DataBaseHelper(this, lang, 5);
-
+        dataBaseHelper = new DataBaseHelper(this, lang, length);
         correctWord = dataBaseHelper.getCorrectWord();
+        words = dataBaseHelper.getWords();
 
         currentLevel = 0;
         currentPosition = 0;
@@ -64,7 +88,6 @@ public class GameActivity extends AppCompatActivity {
 
         generateBoxes();
         generateKeyboardBtns();
-
         setLetterKeyBoardOnClickListeners();
     }
 
@@ -92,7 +115,6 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < letters.length; i++) {
             int btnId = getResources().getIdentifier("btn" + letters[i], "id", getPackageName());
             Button btn = findViewById(btnId);
-
             int finalI = i;
             btn.setOnClickListener((View v) -> {
                 boxes.get(currentBox).setLetter(letters[finalI]);
@@ -125,7 +147,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void incrementPosition() {
         // A letter has been inserted, so increment the currentBox and position
-        if (currentPosition < 4) {
+        if (currentPosition < length - 1) {
             // Current position is not at the end
             // So, increment it by one
             currentPosition++;
@@ -143,7 +165,7 @@ public class GameActivity extends AppCompatActivity {
 
         boxes = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < length; j++) {
                 CharacterBox box = new CharacterBox("", j, i, 0, 0, false);
 
                 boxes.add(box);
@@ -154,16 +176,16 @@ public class GameActivity extends AppCompatActivity {
         adapter.setCharacterBoxes(boxes);
 
         characterBoxesRecView.setAdapter(adapter);
-        characterBoxesRecView.setLayoutManager(new GridLayoutManager(this, 5));
+        characterBoxesRecView.setLayoutManager(new GridLayoutManager(this, length));
     }
 
     public boolean makeGuess() {
         StringBuilder guess = new StringBuilder();
 
         // Check if each box is filled in the current level
-        int start = currentLevel * 5;
+        int start = currentLevel * length;
 
-        for (int i = start; i < start + 5; i++) {
+        for (int i = start; i < start + length; i++) {
             if (boxes.get(i).getLetter().isEmpty()) {
                 Toast.makeText(this, "You need to have five letters", Toast.LENGTH_SHORT).show();
                 return false;
@@ -172,7 +194,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
         // Check guess word against others in database to filter nonsense
-        ArrayList<String> words = dataBaseHelper.getWords();
         boolean validWord = false;
 
         for (int i = 0; i < words.size(); i++) {
@@ -187,8 +208,8 @@ public class GameActivity extends AppCompatActivity {
             LinkedHashMap<String, Integer> guessLetterFrequencies = countFrequencies(guess.toString().toCharArray());
             LinkedHashMap<Integer, String> guessLetterPositions = getPositions(guess.toString().toCharArray());
 
-            LinkedHashMap<String, Integer> correctLetterFrequencies = countFrequencies(correctWord.toCharArray());
-            LinkedHashMap<Integer, String> correctLetterPositions = getPositions(correctWord.toCharArray());
+            LinkedHashMap<String, Integer> correctLetterFrequencies = countFrequencies(correctWord.get(0).toCharArray());
+            LinkedHashMap<Integer, String> correctLetterPositions = getPositions(correctWord.get(0).toCharArray());
 
             Log.d(TAG, guessLetterFrequencies.toString());
             Log.d(TAG, guessLetterPositions.toString());
@@ -196,7 +217,7 @@ public class GameActivity extends AppCompatActivity {
 
             Log.d(TAG, correctLetterFrequencies.toString());
             Log.d(TAG, correctLetterPositions.toString());
-            Log.d(TAG, correctWord);
+            Log.d(TAG, correctWord.get(0));
 
             /*
                 Iterate over positions hashmaps
@@ -278,7 +299,7 @@ public class GameActivity extends AppCompatActivity {
                     currentPosition = 0;
                 } else {
                     // Too many incorrect guesses
-                    Toast.makeText(this, "You lose. The word was " + correctWord, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "You lose. The word was " + correctWord.get(0), Toast.LENGTH_SHORT).show();
                     disableKeyboardOnClickListeners();
                 }
             }
